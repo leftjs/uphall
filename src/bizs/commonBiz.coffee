@@ -1,18 +1,28 @@
 db = require('./../libs/db')
 
-validateUserInfo =  (req,res,next) ->
-  if req.path is '/api/users/login' or  req.path is '/api/users/register'
-    return next()
-  else
-    token = req.header('x-token')
-    db.users.findOne({token:token, expiredTime:{$gt: Date.now()}},(err,user) ->
-      req.userInfo = user if not err
-      if user
-        return next()
-      else
-        return next("未传token或者token出错")
-    )
+
+
+customError = (status,msg) ->
+  err = new Error()
+  err.status = status
+  err.message = msg
+  return err
+
+authAndSetUserInfo = (req,res,next) ->
+  token = req.header('x-token')
+  if not token
+    return next(customError(401,'未传入token'))
+  db.users.findOne({token:token,expiredTime:{$gt: Date.now()}}, (err,user) ->
+    return next(err) if err
+    if user
+      req.userInfo = user
+      return next()
+    else
+      return next(customError(401, '授权失败,请检查你的token'))
+
+  )
 
 module.exports = {
-  validateUserInfo: validateUserInfo
+  authAndSetUserInfo: authAndSetUserInfo
+  customError: customError
 }

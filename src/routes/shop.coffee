@@ -3,11 +3,13 @@ router = express.Router()
 
 
 shopBiz = require('./../bizs/shopBiz')
+commonBiz = require '../bizs/commonBiz'
 
 
 # 添加一个窗口
 router.post(
   '/'
+  commonBiz.authAndSetUserInfo
   shopBiz.addShop
 )
 
@@ -31,7 +33,6 @@ router.get(
 )
 
 
-
 # 获取某个窗口的信息
 router.get(
   '/:shopId'
@@ -49,7 +50,6 @@ router.delete('/shop/:id')
 
 # 获取所有菜品
 router.get('/shop/:shopId/')
-
 
 
 module.exports = router
