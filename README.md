@@ -1,2 +1,2 @@
 # uphall
-简易食堂系统
+The api for UpHall (尚食堂)
