@@ -10,7 +10,7 @@
 
   commonBiz = require('../bizs/commonBiz');
 
-  router.post('/', commonBiz.authAndSetUserInfo, shopBiz.addShop);
+  router.post('/add', commonBiz.authAndSetUserInfo, shopBiz.addShop);
 
   router.get('/all/type/:type', shopBiz.getSomeShop);
 

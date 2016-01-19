@@ -8,7 +8,7 @@ commonBiz = require '../bizs/commonBiz'
 
 # 添加一个窗口
 router.post(
-  '/'
+  '/add'
   commonBiz.authAndSetUserInfo
   shopBiz.addShop
 )

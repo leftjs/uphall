@@ -8,7 +8,7 @@
     port: 7410,
     dbFilePath: path.join(__dirname, './../database/'),
     dbPath: 'mongodb://localhost/myapi',
-    secret: 'password key secret',
+    secret: 'token secret',
     tokenExpiredTime: 1000 * 60 * 60 * 24
   };
 

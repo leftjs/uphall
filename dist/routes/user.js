@@ -14,9 +14,11 @@
 
   router.post('/login', userBiz.login);
 
+  router.post('/autologin', userBiz.autoLogin);
+
   router.get('/list');
 
-  router.put('/:id');
+  router.put('/:id', userBiz.update);
 
   router.get('/:id');
 

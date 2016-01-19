@@ -19,6 +19,14 @@ router.post(
   userBiz.login
 )
 
+#自动登录
+router.post(
+  '/autologin'
+  userBiz.autoLogin
+)
+
+
+
 #用户列表
 router.get(
   '/list'
@@ -28,6 +36,7 @@ router.get(
 # 用户更新
 router.put(
   '/:id'
+  userBiz.update
 )
 
 # 获取用户信息
