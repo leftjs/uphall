@@ -8,7 +8,7 @@ cors = require('cors')
 
 apiRoutes = require('../routes/api')
 userRoutes = require('../routes/user')
-shopRoutes = require('../routes/shop')
+shopRoutes = require('../routes/window')
 
 
 commonBiz = require('./../bizs/commonBiz')
@@ -36,7 +36,7 @@ app.use(cors())
 #app.use(commonBiz.validateUserInfo)
 app.use('/api', apiRoutes)
 app.use('/api/users', userRoutes)
-app.use('/api/shops', shopRoutes)
+app.use('/api/windows', shopRoutes)
 # catch 404 and forward to error handler
 app.use (req, res, next)->
   err = new Error('Not Found')

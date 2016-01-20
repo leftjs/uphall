@@ -15,8 +15,8 @@
     autoload: true
   });
 
-  db.shops = new Datastore({
-    filename: db.path + 'shop.db',
+  db.windows = new Datastore({
+    filename: db.path + 'windows.db',
     autoload: true
   });
 

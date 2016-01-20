@@ -33,7 +33,7 @@ register = (req,res,next) ->
     token: ''
     expiredTime: Date.now()
     is_admin: body.is_admin ?= false
-    is_shopper: body.is_shopper ?= false
+    is_windower: body.is_windower ?= false
   }
 
   db.users.insert(postData,(err,user) ->
@@ -79,8 +79,8 @@ update = (req,res,next) ->
       postData.password = md5Util.md5(req.body.password)
     if req.body.is_admin isnt undefined
       postData.is_admin = req.body.is_admin
-    if req.body.is_shopper isnt undefined
-      postData.is_shopper = req.body.is_shopper
+    if req.body.is_windower isnt undefined
+      postData.is_windower = req.body.is_windower
 
     db.users.update({_id: id},{$set:postData},(err,numReplaced) ->
       return next(err) if err
@@ -88,19 +88,21 @@ update = (req,res,next) ->
       res.json(true)
     )
 
-
   id = req.params['id']
   token = req.header('x-token')
   idInToken = Utils.idFromToken(token)
 
   if id isnt idInToken
-    db.users.findOne({_id: idInToken},(err,user) ->
-      return next(err) if err
-      if user.is_admin
-        doing(req,res,next)
-      else
-        return next(commonBiz.customError(401,'您没有权利这么做'))
+    commonBiz.authIsAdmin(idInToken,() ->
+      doing(req,res,next)
     )
+#    db.users.findOne({_id: idInToken},(err,user) ->
+#      return next(err) if err
+#      if user.is_admin
+#        doing(req,res,next)
+#      else
+#        return next(commonBiz.customError(401,'您没有权利这么做'))
+#    )
   else
     doing(req,res,next)
 

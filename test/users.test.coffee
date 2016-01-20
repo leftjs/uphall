@@ -9,8 +9,9 @@ adminToken = ''
 customerId = ''
 customerToken = ''
 
-shopperId = ''
-shopperToken = ''
+
+windowerId = ''
+windowerToken = ''
 
 
 
@@ -40,13 +41,13 @@ describe('POST /api/users/register',->
       customerId = res.body.id
     ).end(done)
   )
-  it('register with a shopper user will success',(done) ->
+  it('register with a windower user will success',(done) ->
     request(app)
     .post('/api/users/register')
-    .send({username: 'shopper',password: 'shopper',is_shopper: true})
+    .send({username: 'windower',password: 'windower',is_windower: true})
     .expect(200)
     .expect((res) ->
-      shopperId = res.body.id
+      windowerId = res.body.id
     ).end(done)
   )
   it('register with admin/admin will success',(done) ->
@@ -95,16 +96,18 @@ describe('POST /api/users/login', ->
       customerToken = res.body.token
     ).end(done)
   )
-  it('login a shopper user to test will success', (done) ->
+  it('login a windower user to test will success', (done) ->
     request(app)
     .post('/api/users/login')
-    .send({username:'shopper',password:'shopper'})
+    .send({username:'windower',password:'windower'})
     .expect(200)
     .expect((res) ->
-      shopperToken = res.body.token
+      windowerToken = res.body.token
     ).end(done)
   )
 )
+
+
 
 
 
@@ -124,7 +127,7 @@ describe('POST /api/users/autologin', ->
   )
 )
 
-
+# 用户信息更新api测试
 describe('PUT /api/users/:id', ->
   it('update name by one\'s self',(done) ->
     request(app)
@@ -142,46 +145,220 @@ describe('PUT /api/users/:id', ->
     .expect(200)
     .end(done)
     )
-  it('update is_admin with true by one\'s self',(done) ->
-    request(app)
-    .put('/api/users/' + customerId)
-    .set('x-token',customerToken)
-    .send({is_admin: true})
-    .expect(200)
-    .end(done)
-  )
   it('update is_admin with false by one\'s self',(done) ->
     request(app)
-    .put('/api/users/' + customerId)
-    .set('x-token',customerToken)
+    .put('/api/users/' + adminId)
+    .set('x-token',adminToken)
     .send({is_admin: false})
     .expect(200)
     .end(done)
   )
-  it('update is_shoper with false by one\'s self',(done) ->
+  it('update is_admin with true by one\'s self',(done) ->
     request(app)
-    .put('/api/users/' + customerId)
-    .set('x-token',customerToken)
-    .send({is_shopper: true})
-    .expect(200)
-    .end(done)
-  )
-  it('update is_shoper with false by one\'s self',(done) ->
-    request(app)
-    .put('/api/users/' + customerId)
-    .set('x-token',customerToken)
-    .send({is_shopper: false})
-    .expect(200)
-    .end(done)
-  )
-  it('update is_shoper with true by admin',(done) ->
-    request(app)
-    .put('/api/users/' + customerId)
+    .put('/api/users/' + adminId)
     .set('x-token',adminToken)
-    .send({is_shopper: true})
+    .send({is_admin: true})
+    .expect(200)
+    .end(done)
+  )
+
+  it('update is_windower with false by one\'s self',(done) ->
+    request(app)
+    .put('/api/users/' + windowerId)
+    .set('x-token',windowerToken)
+    .send({is_windower: true})
+    .expect(200)
+    .end(done)
+  )
+  it('update is_windower with false by one\'s self',(done) ->
+    request(app)
+    .put('/api/users/' + windowerId)
+    .set('x-token',windowerToken)
+    .send({is_windower: false})
+    .expect(200)
+    .end(done)
+  )
+  it('update is_windower with true by admin',(done) ->
+    request(app)
+    .put('/api/users/' + windowerId)
+    .set('x-token',adminToken)
+    .send({is_windower: true})
     .expect(200)
     .end(done)
     )
   )
+
+
+
+
+# 窗口id
+windowId = ''
+
+describe('POST /api/windows/addwindow',->
+  it('create a new window  without token',(done) ->
+    request(app)
+    .post('/api/windows/addwindow')
+    .expect(401)
+    .end(done)
+  )
+  it('create a new window with fake token',(done) ->
+    request(app)
+    .post('/api/windows/addwindow')
+    .set('x-token','fake token')
+    .expect(401)
+    .end(done)
+  )
+  it('create a new window by normal user with  token',(done) ->
+    request(app)
+    .post('/api/windows/addwindow')
+    .set('x-token',customerToken)
+    .expect(400)
+    .end(done)
+  )
+  it('create a new window by windower with token and default params',(done) ->
+    request(app)
+    .post('/api/windows/addwindow')
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      windowId = res.body.id
+      console.log('windowId:  ' + windowId)
+
+    ).end(done)
+  )
+  it('create a new window by windower user with fake token and own params',(done) ->
+    request(app)
+    .post('/api/windows/addwindow')
+    .set('x-token',windowerToken)
+    .send({
+      windowName: 'testWindow'
+      address: 'testAddress'
+      type: '2'
+      shopping_breakfast: true
+      shopping_lunch: true
+      shopping_dinner: true
+    })
+    .expect(200)
+    .expect((res) ->
+      windowId = res.body.id
+      console.log('windowId:  ' + windowId)
+    )
+    .end(done)
+    )
+
+
+  )
+
+describe('GET /api/windows/getwindow/:id', ->
+  it('get a window with invalidId will failure',(done) ->
+    request(app)
+    .get('/api/windows/getwindow/' + 'invalidId')
+    .set('x-token',windowerToken)
+    .expect(404)
+    .end(done)
+  )
+  it('get a window with validId will success',(done) ->
+    request(app)
+    .get('/api/windows/getwindow/' + windowId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+#      console.log(res.body)
+    )
+    .end(done)
+  )
+)
+
+
+
+
+
+
+
+describe('UPDATE /api/windows/updatewindow/:id', ->
+
+  it('update window without token will failure', (done) ->
+    request(app)
+    .put('/api/windows/updatewindow/' + windowId)
+    .send({windowName:'jason'})
+    .expect(401)
+    .end(done)
+  )
+  it('update window by oneself will success', (done) ->
+    request(app)
+    .put('/api/windows/updatewindow/' + windowId)
+    .set('x-token',windowerToken)
+    .send({windowName:'jason'})
+    .expect(200)
+    .end(done)
+  )
+
+  it('update window by oneself will success', (done) ->
+    request(app)
+    .put('/api/windows/updatewindow/' + windowId)
+    .set('x-token',adminToken)
+    .send({windowName:'zhang',author:{id:'asasdf',name:'hahsdfasdfasdf'}})
+    .expect(200)
+    .end(done)
+  )
+  it('validate windownName has been changed',(done) ->
+    request(app)
+    .get('/api/windows/getwindow/' + windowId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      throw new Error() if res.body.windowName isnt 'zhang'
+    )
+    .end(done)
+  )
+)
+
+
+
+describe('DELETE /api/windows/deletewindow/:id', ->
+  it('delete window by oneself',(done) ->
+    request(app)
+    .delete('/api/windows/deletewindow/' + windowId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .end(done)
+  )
+  it('delete window by admin',(done) ->
+    request(app)
+    .delete('/api/windows/deletewindow/' + windowId)
+    .set('x-token',adminToken)
+    .expect(200)
+    .end(done)
+  )
+  it('delete window by customer',(done) ->
+    request(app)
+    .delete('/api/windows/deletewindow/' + windowId)
+    .set('x-token',customerToken)
+    .expect(401)
+    .end(done)
+  )
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

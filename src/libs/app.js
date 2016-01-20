@@ -18,7 +18,7 @@
 
   userRoutes = require('../routes/user');
 
-  shopRoutes = require('../routes/shop');
+  shopRoutes = require('../routes/window');
 
   commonBiz = require('./../bizs/commonBiz');
 
@@ -40,7 +40,7 @@
 
   app.use('/api/users', userRoutes);
 
-  app.use('/api/shops', shopRoutes);
+  app.use('/api/windows', shopRoutes);
 
   app.use(function(req, res, next) {
     var err;

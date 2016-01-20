@@ -43,7 +43,7 @@
       token: '',
       expiredTime: Date.now(),
       is_admin: body.is_admin != null ? body.is_admin : body.is_admin = false,
-      is_shopper: body.is_shopper != null ? body.is_shopper : body.is_shopper = false
+      is_windower: body.is_windower != null ? body.is_windower : body.is_windower = false
     };
     return db.users.insert(postData, function(err, user) {
       if (err) {
@@ -129,8 +129,8 @@
       if (req.body.is_admin !== void 0) {
         postData.is_admin = req.body.is_admin;
       }
-      if (req.body.is_shopper !== void 0) {
-        postData.is_shopper = req.body.is_shopper;
+      if (req.body.is_windower !== void 0) {
+        postData.is_windower = req.body.is_windower;
       }
       return db.users.update({
         _id: id
@@ -150,17 +150,8 @@
     token = req.header('x-token');
     idInToken = Utils.idFromToken(token);
     if (id !== idInToken) {
-      return db.users.findOne({
-        _id: idInToken
-      }, function(err, user) {
-        if (err) {
-          return next(err);
-        }
-        if (user.is_admin) {
-          return doing(req, res, next);
-        } else {
-          return next(commonBiz.customError(401, '您没有权利这么做'));
-        }
+      return commonBiz.authIsAdmin(idInToken, function() {
+        return doing(req, res, next);
       });
     } else {
       return doing(req, res, next);
