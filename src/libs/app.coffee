@@ -34,7 +34,7 @@ app.use(cors())
 app.use('/api', apiRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/windows', shopRoutes)
-app.use('/api/window',foodRoutes)
+app.use('/api/foods',foodRoutes)
 # catch 404 and forward to error handler
 app.use (req, res, next)->
   err = new Error('Not Found')

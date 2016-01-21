@@ -363,56 +363,89 @@ describe('GET /api/windows/getallwindows', ->
 )
 
 
-describe('POST /api/window/:id/addfood', ->
+foodId = ''
+
+describe('POST /api/food/:id', ->
   it('add a food to a window with windower',(done) ->
     request(app)
-    .post('/api/window/' + windowId + '/addfood')
+    .post('/api/foods/' + windowId)
     .set('x-token', windowerToken)
     .expect(200)
     .expect((res) ->
 #      console.log(res.body)
+      foodId = res.body.id
     )
     .end(done)
   )
-  it('add a food to a window with other will failure',(done) ->
+  it('add a food to a window with other user  will failure',(done) ->
     request(app)
-    .post('/api/window/' + windowId + '/addfood')
+    .post('/api/foods/' + windowId )
     .set('x-token', customerToken)
     .expect(401)
     .expect((res) ->
-#      console.log(res.body)
+      console.log(res.body)
     )
     .end(done)
   )
+
 
 )
 
 
+describe('单个食物的删改查', ->
+  it('获取一个是食物的信息',(done) ->
+    request(app)
+    .get('/api/foods/' + foodId)
+    .set('x-token', customerToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    ).end(done)
+  )
 
+  it('修改一个食物的信息',(done) ->
+    request(app)
+    .put('/api/foods/' + foodId)
+    .set('x-token', windowerToken)
+    .send({
+      name:'土豆丝'
+      price:4
+      number: 23
+    })
+    .expect(200)
+    .end(done)
+  )
+  it('获取一个食物的信息',(done) ->
+    request(app)
+    .get('/api/foods/' + foodId)
+    .set('x-token', customerToken)
+    .expect(200)
+    .expect((res) ->
+#      console.log(res.body)
+    ).end(done)
+  )
+  it('删除一个食物的信息(不是本人)',(done) ->
+    request(app)
+    .delete('/api/foods/' + foodId)
+    .set('x-token', customerToken)
+    .expect(401)
+    .end(done)
+  )
+  it('删除一个食物的信息(是本人)',(done) ->
+    request(app)
+    .delete('/api/foods/' + foodId)
+    .set('x-token', windowerToken)
+    .expect(200)
+    .end(done)
+  )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  it('获取一个食物的信息',(done) ->
+    request(app)
+    .get('/api/foods/' + foodId)
+    .set('x-token', customerToken)
+    .expect(404)
+    .end(done)
+  )
+)
 
 

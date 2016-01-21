@@ -42,7 +42,7 @@
 
   app.use('/api/windows', shopRoutes);
 
-  app.use('/api/window', foodRoutes);
+  app.use('/api/foods', foodRoutes);
 
   app.use(function(req, res, next) {
     var err;
