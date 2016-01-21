@@ -22,10 +22,16 @@
     postData = {
       windowName: body.windowName != null ? body.windowName : body.windowName = '张师傅的窗口',
       address: body.address != null ? body.address : body.address = '1楼红椅区12号窗',
-      type: body.type != null ? body.type : body.type = '0',
+      type: body.type != null ? body.type : body.type = 0,
       shopping_breakfast: body.shopping_breakfast != null ? body.shopping_breakfast : body.shopping_breakfast = false,
       shopping_lunch: body.shopping_lunch != null ? body.shopping_lunch : body.shopping_lunch = false,
       shopping_dinner: body.shopping_dinner != null ? body.shopping_dinner : body.shopping_dinner = false,
+      description: body.description != null ? body.description : body.description = '一个新兴的势力',
+      bulletin: body.bulletin != null ? body.bulletin : body.bulletin = '打包免餐盒费,节假日午休',
+      rate_score: body.rate_score != null ? body.rate_score : body.rate_score = 5.0,
+      sale_a_month: 3000,
+      createDate: Date.now(),
+      resting: false,
       is_delete: false,
       author: {
         id: userInfo._id,
@@ -83,7 +89,7 @@
         _id: req.params['id']
       }, function(err, doc) {
         var postData;
-        postData = commonBiz.concatPostData(doc, req.body, _.without(_.keys(doc), '_id', 'author'));
+        postData = commonBiz.concatPostData(doc, req.body, _.without(_.keys(doc), '_id', 'author', 'rate_score', 'sale_a_month'));
         return db.windows.update({
           _id: req.params['id']
         }, {
