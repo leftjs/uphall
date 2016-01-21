@@ -33,6 +33,13 @@ router.delete(
   windowBiz.removeWindow
 )
 
+router.get(
+  '/getallwindows'
+  commonBiz.authAndSetUserInfo
+  windowBiz.getAllWindows
+)
+
+
 
 
 module.exports = router

@@ -341,6 +341,60 @@ describe('DELETE /api/windows/deletewindow/:id', ->
 
 
 
+describe('GET /api/windows/getallwindows', ->
+
+  it('add a window for test',(done) ->
+    request(app)
+    .post('/api/windows/addwindow')
+    .set('x-token',windowerToken)
+    .expect(200)
+    .end(done)
+  )
+  it('get all windows',(done) ->
+    request(app)
+    .get('/api/windows/getallwindows')
+    .set('x-token',customerToken)
+    .expect(200)
+    .expect((res) ->
+#      console.log(res.body)
+    )
+    .end(done)
+  )
+)
+
+
+describe('POST /api/window/:id/addfood', ->
+  it('add a food to a window with windower',(done) ->
+    request(app)
+    .post('/api/window/' + windowId + '/addfood')
+    .set('x-token', windowerToken)
+    .expect(200)
+    .expect((res) ->
+#      console.log(res.body)
+    )
+    .end(done)
+  )
+  it('add a food to a window with other will failure',(done) ->
+    request(app)
+    .post('/api/window/' + windowId + '/addfood')
+    .set('x-token', customerToken)
+    .expect(401)
+    .expect((res) ->
+#      console.log(res.body)
+    )
+    .end(done)
+  )
+
+)
+
+
+
+
+
+
+
+
+
 
 
 

@@ -18,6 +18,8 @@
 
   router["delete"]('/deletewindow/:id', commonBiz.authAndSetUserInfo, windowBiz.removeWindow);
 
+  router.get('/getallwindows', commonBiz.authAndSetUserInfo, windowBiz.getAllWindows);
+
   module.exports = router;
 
 }).call(this);

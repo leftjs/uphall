@@ -30,10 +30,12 @@ authAndSetUserInfo = (req,res,next) ->
       req.userInfo = user
       return next()
     else
-      return next(customError(401, '授权失败,请检查你的token'))
+      return next(customError(401, 'api授权失败,请检查你的token'))
 
   )
 
+
+#  拼接postdata
 concatPostData = (oldData,newData,allow=undefined ) ->
   postData = {}
   keys = _.keys(oldData)
@@ -42,6 +44,8 @@ concatPostData = (oldData,newData,allow=undefined ) ->
       postData[key] = value
   )
   return postData
+
+
 
 module.exports = {
   authAndSetUserInfo: authAndSetUserInfo

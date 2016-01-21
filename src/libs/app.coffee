@@ -9,10 +9,7 @@ cors = require('cors')
 apiRoutes = require('../routes/api')
 userRoutes = require('../routes/user')
 shopRoutes = require('../routes/window')
-
-
-commonBiz = require('./../bizs/commonBiz')
-
+foodRoutes = require('../routes/food')
 
 app = express()
 
@@ -37,6 +34,7 @@ app.use(cors())
 app.use('/api', apiRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/windows', shopRoutes)
+app.use('/api/window',foodRoutes)
 # catch 404 and forward to error handler
 app.use (req, res, next)->
   err = new Error('Not Found')

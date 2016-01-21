@@ -48,7 +48,7 @@
         req.userInfo = user;
         return next();
       } else {
-        return next(customError(401, '授权失败,请检查你的token'));
+        return next(customError(401, 'api授权失败,请检查你的token'));
       }
     });
   };

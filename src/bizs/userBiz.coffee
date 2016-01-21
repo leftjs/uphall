@@ -38,6 +38,7 @@ register = (req,res,next) ->
 
   db.users.insert(postData,(err,user) ->
     return next(err) if err
+#    console.log(user)
     res.send({id: user._id})
   )
 
@@ -47,7 +48,7 @@ login = (req,res,next) ->
   password = md5Util.md5(req.body.password ?= '')
   db.users.findOne({username:username,password:password},(err,user) ->
     return next(err) if err
-    return next(commonBiz.customError(400,'用户名或密码错误')) if !user
+    return next(commonBiz.customError(400,'用户名或密码错误')) if not user
     token = jwt.sign({id: user._id},config.secret)
     expiredTime = Date.now() + config.tokenExpiredTime
     db.users.update({_id:user._id},{$set: {token:token,expiredTime:expiredTime}},(err,numReplaced) ->

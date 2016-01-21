@@ -20,6 +20,11 @@
     autoload: true
   });
 
+  db.foods = new Datastore({
+    filename: db.path + 'foods.db',
+    autoload: true
+  });
+
   module.exports = db;
 
 }).call(this);

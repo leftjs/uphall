@@ -5,7 +5,7 @@ config = require('./../config/config')
 commonBiz = require './commonBiz'
 Utils = require './../utils/Utils'
 
-_ = require 'lodash'
+_ = require 'underscore'
 
 
 
@@ -34,7 +34,7 @@ addWindow = (req,res,next) ->
     res.json({msg:'添加成功',id: shop._id})
   )
 
-
+# 获取单个窗口
 getWindow = (req,res,next) ->
   id = req.params['id']
   db.windows.findOne({_id: id},(err,window) ->
@@ -43,10 +43,20 @@ getWindow = (req,res,next) ->
     next(commonBiz.customError(404,'未找到此窗口'))
   )
 
+getAllWindows = (req,res,next) ->
+  db.windows.find({is_delete: false},(err,array) ->
+    return next(err) if err
+    if array.length is 0
+      return res.json([])
+    return res.json(_.map(array, (doc) ->
+      delete doc.is_delete
+      return doc
+    ))
+  )
 
+
+# 更新窗口
 updateWindow = (req,res,next) ->
-
-
   doing = (req,res,next) ->
     db.windows.findOne({_id:req.params['id']},(err,doc) ->
       # 窗口持有者无法修改
@@ -102,9 +112,14 @@ removeWindow = (req,res,next) ->
   )
 
 
+
+
+
+
 module.exports = {
   addWindow: addWindow
   getWindow: getWindow
   updateWindow: updateWindow
   removeWindow: removeWindow
+  getAllWindows: getAllWindows
 }
