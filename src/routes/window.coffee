@@ -8,33 +8,33 @@ commonBiz = require '../bizs/commonBiz'
 
 # 添加一个窗口
 router.post(
-  '/addwindow'
+  '/'
   commonBiz.authAndSetUserInfo
   windowBiz.addWindow
 )
 
 router.get(
-  '/getwindow/:id'
+  '/:id'
   commonBiz.authAndSetUserInfo
   windowBiz.getWindow
 )
 
 
 router.put(
-  '/updatewindow/:id'
+  '/:id'
   commonBiz.authAndSetUserInfo
   windowBiz.updateWindow
 )
 
 
 router.delete(
-  '/deletewindow/:id'
+  '/:id'
   commonBiz.authAndSetUserInfo
   windowBiz.removeWindow
 )
 
 router.get(
-  '/getallwindows'
+  '/'
   commonBiz.authAndSetUserInfo
   windowBiz.getAllWindows
 )

@@ -10,15 +10,15 @@
 
   commonBiz = require('../bizs/commonBiz');
 
-  router.post('/addwindow', commonBiz.authAndSetUserInfo, windowBiz.addWindow);
+  router.post('/', commonBiz.authAndSetUserInfo, windowBiz.addWindow);
 
-  router.get('/getwindow/:id', commonBiz.authAndSetUserInfo, windowBiz.getWindow);
+  router.get('/:id', commonBiz.authAndSetUserInfo, windowBiz.getWindow);
 
-  router.put('/updatewindow/:id', commonBiz.authAndSetUserInfo, windowBiz.updateWindow);
+  router.put('/:id', commonBiz.authAndSetUserInfo, windowBiz.updateWindow);
 
-  router["delete"]('/deletewindow/:id', commonBiz.authAndSetUserInfo, windowBiz.removeWindow);
+  router["delete"]('/:id', commonBiz.authAndSetUserInfo, windowBiz.removeWindow);
 
-  router.get('/getallwindows', commonBiz.authAndSetUserInfo, windowBiz.getAllWindows);
+  router.get('/', commonBiz.authAndSetUserInfo, windowBiz.getAllWindows);
 
   module.exports = router;
 

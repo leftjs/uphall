@@ -10,6 +10,7 @@ apiRoutes = require('../routes/api')
 userRoutes = require('../routes/user')
 shopRoutes = require('../routes/window')
 foodRoutes = require('../routes/food')
+orderRoutes = require('../routes/order')
 
 app = express()
 
@@ -35,6 +36,8 @@ app.use('/api', apiRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/windows', shopRoutes)
 app.use('/api/foods',foodRoutes)
+app.use('/api/orders',orderRoutes)
+
 # catch 404 and forward to error handler
 app.use (req, res, next)->
   err = new Error('Not Found')

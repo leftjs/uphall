@@ -3,25 +3,19 @@ commonBiz = require './src/bizs/commonBiz'
 _ = require 'underscore'
 
 HashMap = require('hashmap')
+Q = require('q')
 
 
-oldData = {
-  name: '匿名'
-  username: '1232324'
-  token: ''
-}
 
-newData = {
-  name: '匿名aasdf'
-  username: 12
-  token: 'asdfasdf'
-}
-
-array = []
+foo = (result) ->
+  console.log(result)
+  return result + result
 
 
-_.map(array,(doc)->
- console.log(doc.name)
+
+funcs = [foo,foo,foo]
+funcs.reduce(
+  (prev,current) ->
+    return prev.then(current)
+  Q('hello')
 )
-
-

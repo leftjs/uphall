@@ -197,27 +197,27 @@ windowId = ''
 describe('POST /api/windows/addwindow',->
   it('create a new window  without token',(done) ->
     request(app)
-    .post('/api/windows/addwindow')
+    .post('/api/windows/')
     .expect(401)
     .end(done)
   )
   it('create a new window with fake token',(done) ->
     request(app)
-    .post('/api/windows/addwindow')
+    .post('/api/windows/')
     .set('x-token','fake token')
     .expect(401)
     .end(done)
   )
   it('create a new window by normal user with  token',(done) ->
     request(app)
-    .post('/api/windows/addwindow')
+    .post('/api/windows/')
     .set('x-token',customerToken)
     .expect(400)
     .end(done)
   )
   it('create a new window by windower with token and default params',(done) ->
     request(app)
-    .post('/api/windows/addwindow')
+    .post('/api/windows/')
     .set('x-token',windowerToken)
     .expect(200)
     .expect((res) ->
@@ -228,7 +228,7 @@ describe('POST /api/windows/addwindow',->
   )
   it('create a new window by windower user with fake token and own params',(done) ->
     request(app)
-    .post('/api/windows/addwindow')
+    .post('/api/windows/')
     .set('x-token',windowerToken)
     .send({
       windowName: 'testWindow'
@@ -252,14 +252,14 @@ describe('POST /api/windows/addwindow',->
 describe('GET /api/windows/getwindow/:id', ->
   it('get a window with invalidId will failure',(done) ->
     request(app)
-    .get('/api/windows/getwindow/' + 'invalidId')
+    .get('/api/windows/' + 'invalidId')
     .set('x-token',windowerToken)
     .expect(404)
     .end(done)
   )
   it('get a window with validId will success',(done) ->
     request(app)
-    .get('/api/windows/getwindow/' + windowId)
+    .get('/api/windows/' + windowId)
     .set('x-token',windowerToken)
     .expect(200)
     .expect((res) ->
@@ -279,14 +279,14 @@ describe('UPDATE /api/windows/updatewindow/:id', ->
 
   it('update window without token will failure', (done) ->
     request(app)
-    .put('/api/windows/updatewindow/' + windowId)
+    .put('/api/windows/' + windowId)
     .send({windowName:'jason'})
     .expect(401)
     .end(done)
   )
   it('update window by oneself will success', (done) ->
     request(app)
-    .put('/api/windows/updatewindow/' + windowId)
+    .put('/api/windows/' + windowId)
     .set('x-token',windowerToken)
     .send({windowName:'jason'})
     .expect(200)
@@ -295,7 +295,7 @@ describe('UPDATE /api/windows/updatewindow/:id', ->
 
   it('update window by oneself will success', (done) ->
     request(app)
-    .put('/api/windows/updatewindow/' + windowId)
+    .put('/api/windows/' + windowId)
     .set('x-token',adminToken)
     .send({windowName:'zhang',author:{id:'asasdf',name:'hahsdfasdfasdf'}})
     .expect(200)
@@ -303,7 +303,7 @@ describe('UPDATE /api/windows/updatewindow/:id', ->
   )
   it('validate windownName has been changed',(done) ->
     request(app)
-    .get('/api/windows/getwindow/' + windowId)
+    .get('/api/windows/' + windowId)
     .set('x-token',windowerToken)
     .expect(200)
     .expect((res) ->
@@ -318,21 +318,21 @@ describe('UPDATE /api/windows/updatewindow/:id', ->
 describe('DELETE /api/windows/deletewindow/:id', ->
   it('delete window by oneself',(done) ->
     request(app)
-    .delete('/api/windows/deletewindow/' + windowId)
+    .delete('/api/windows/' + windowId)
     .set('x-token',windowerToken)
     .expect(200)
     .end(done)
   )
   it('delete window by admin',(done) ->
     request(app)
-    .delete('/api/windows/deletewindow/' + windowId)
+    .delete('/api/windows/' + windowId)
     .set('x-token',adminToken)
     .expect(200)
     .end(done)
   )
   it('delete window by customer',(done) ->
     request(app)
-    .delete('/api/windows/deletewindow/' + windowId)
+    .delete('/api/windows/' + windowId)
     .set('x-token',customerToken)
     .expect(401)
     .end(done)
@@ -345,14 +345,14 @@ describe('GET /api/windows/getallwindows', ->
 
   it('add a window for test',(done) ->
     request(app)
-    .post('/api/windows/addwindow')
+    .post('/api/windows/')
     .set('x-token',windowerToken)
     .expect(200)
     .end(done)
   )
   it('get all windows',(done) ->
     request(app)
-    .get('/api/windows/getallwindows')
+    .get('/api/windows/')
     .set('x-token',customerToken)
     .expect(200)
     .expect((res) ->
@@ -392,6 +392,8 @@ describe('POST /api/food/:id', ->
 )
 
 
+
+
 describe('单个食物的删改查', ->
   it('获取一个是食物的信息',(done) ->
     request(app)
@@ -399,7 +401,7 @@ describe('单个食物的删改查', ->
     .set('x-token', customerToken)
     .expect(200)
     .expect((res) ->
-      console.log(res.body)
+#      console.log(res.body)
     ).end(done)
   )
 
@@ -424,7 +426,7 @@ describe('单个食物的删改查', ->
     .set('x-token', customerToken)
     .expect(200)
     .expect((res) ->
-      console.log(res.body)
+#      console.log(res.body)
     ).end(done)
   )
   it('删除一个食物的信息(不是本人)',(done) ->
@@ -455,7 +457,7 @@ describe('单个食物的删改查', ->
     .set('x-token',customerToken)
     .expect(200)
     .expect((res) ->
-      console.log(res.body)
+#      console.log(res.body)
     )
     .end(done)
   )
@@ -498,11 +500,130 @@ describe('单个食物的删改查', ->
     .set('x-token',customerToken)
     .expect(200)
     .expect((res) ->
-      console.log(res.body)
+#      console.log(res.body)
     )
     .end(done)
   )
 )
+
+
+
+
+
+
+describe('测试订单相关',->
+  it('添加一个新的窗口',(done) ->
+    request(app)
+    .post('/api/windows/')
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      windowId = res.body.id
+    )
+    .end(done)
+  )
+  it('添加一个食物',(done) ->
+    request(app)
+    .post('/api/foods/' + windowId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      foodId = res.body.id
+    )
+    .end(done)
+  )
+  it('查看一个食物',(done) ->
+    request(app)
+    .get('/api/foods/' + foodId)
+    .set('x-token',customerToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    ).end(done)
+  )
+  it('添加一个订单',(done) ->
+    request(app)
+    .post('/api/orders/' + windowId)
+    .set('x-token',customerToken)
+    .send([
+      {
+        item:foodId
+        count: 5
+      }
+      {
+        item:123
+        count:4
+      }
+    ])
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    )
+    .end(done)
+  )
+  it('添加一个无效的订单',(done) ->
+    request(app)
+    .post('/api/orders/' + windowId)
+    .set('x-token',customerToken)
+    .send([
+      {
+        item:1233
+        count: 5
+      }
+      {
+        item:123
+        count:4
+      }
+    ])
+    .expect(400)
+    .end(done)
+  )
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

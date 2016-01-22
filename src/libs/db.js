@@ -25,6 +25,11 @@
     autoload: true
   });
 
+  db.orders = new Datastore({
+    filename: db.path + 'orders.db',
+    autoload: true
+  });
+
   module.exports = db;
 
 }).call(this);
