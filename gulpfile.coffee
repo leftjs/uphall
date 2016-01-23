@@ -4,10 +4,17 @@ runSequence = require 'run-sequence'
 developServer = require 'gulp-develop-server'
 notify = require 'gulp-notify'
 mocha = require('gulp-mocha')
+coffee = require('gulp-coffee')
+gutil = require('gulp-util')
 
+gulp.task('coffee', ->
+  gulp.src('./src/**/*.coffee')
+  .pipe(coffee({bare: true}).on('error', gutil.log))
+  .pipe(gulp.dest('./dist/'))
+  )
 
 gulp.task 'default',(callback) ->
-  runSequence(['clean'],['copyFiles'],['serve','watch','test'],callback)
+  runSequence(['clean','coffee'],['copyFiles'],['serve','watch','test'],callback)
 
 gulp.task 'clean',(callback) ->
   del ['./dist/'], callback
