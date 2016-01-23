@@ -508,7 +508,7 @@ describe('单个食物的删改查', ->
 
 
 
-
+orderId = ''
 
 
 describe('测试订单相关',->
@@ -557,7 +557,8 @@ describe('测试订单相关',->
     ])
     .expect(200)
     .expect((res) ->
-      console.log(res.body)
+#      console.log(res.body)
+      orderId = res.body.id
     )
     .end(done)
   )
@@ -578,58 +579,88 @@ describe('测试订单相关',->
     .expect(400)
     .end(done)
   )
+  it('获取一个订单信息from other will failure',(done) ->
+    request(app)
+    .get('/api/orders/' + orderId)
+    .set('x-token',adminToken)
+    .expect(401)
+    .end(done)
+  )
+  it('获取一个订单信息from customer will success',(done) ->
+    request(app)
+    .get('/api/orders/' + orderId)
+    .set('x-token',customerToken)
+    .expect(200)
+    .expect((res) ->
+#      console.log(res.body)
+    )
+    .end(done)
+  )
+  it('获取一个订单信息from windower will success',(done) ->
+    request(app)
+    .get('/api/orders/' + orderId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    )
+    .end(done)
+  )
+  it('更新一个订单的信息 from other will failure',(done) ->
+    request(app)
+    .put('/api/orders/' + orderId)
+    .set('x-token', adminToken)
+    .send({
+      has_done: true
+      is_cancel: true
+      has_received: true
+      windower_evaluated: true
+      customer_evaluated: true
+    })
+    .expect(401)
+    .end(done)
+  )
+  it('更新一个订单的信息 from customer',(done) ->
+    request(app)
+    .put('/api/orders/' + orderId)
+    .set('x-token', customerToken)
+    .send({
+      has_done: true
+      is_cancel: true
+      has_received: true
+      windower_evaluated: true
+      customer_evaluated: true
+    })
+    .expect(200)
+    .end(done)
+  )
+  it('更新一个订单的信息 from windower',(done) ->
+    request(app)
+    .put('/api/orders/' + orderId)
+    .set('x-token', windowerToken)
+    .send({
+      has_done: true
+      is_cancel: false
+      has_received: true
+      windower_evaluated: true
+      customer_evaluated: false
+    })
+    .expect(200)
+    .end(done)
+  )
+  it('获取一个订单信息from windower will success',(done) ->
+    request(app)
+    .get('/api/orders/' + orderId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    )
+    .end(done)
+  )
+
+
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

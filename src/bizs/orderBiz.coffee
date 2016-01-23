@@ -11,6 +11,8 @@ eventproxy = require 'eventproxy'
 
 
 
+
+# 添加一个订单
 addOrder = (req,res,next) ->
   windowId = req.params['id']
 
@@ -34,8 +36,17 @@ addOrder = (req,res,next) ->
           items:trueDatas
           count:trueDatas.length
           total:total
-          status: '预定'
-          windowId: windowId
+          createTime: Date.now()
+          has_received: false  # 食堂阿姨是否接单
+          is_cancel: false # 是否取消
+          is_delete: false # 是否删除
+          has_done: false # 是否是完成状态
+          windower_evaluated: false # 卖家已评
+          customer_evaluated: false # 买家已评
+          windowId: windowId # 窗口的id
+          windowerId: window.author.id # 订单所涉及窗口的所有者的id
+          customerId: Utils.idFromToken(req.headers['x-token'])
+
         },(err,result) ->
           return next(err) if err
           return res.json({id: result._id}) if result
@@ -57,11 +68,43 @@ addOrder = (req,res,next) ->
 
 
 
-
+# 获取一个订单的信息,只能是对应的窗口管理者以及对应的消费者
 getOrder = (req,res,next) ->
+  orderId = req.params['id']
+  db.orders.findOne({_id: orderId, is_delete: false}, (err,order) ->
+#    console.log(order)
+    return next(err) if err
+    return next(commonBiz.customError(404,'请检查该订单是否存在')) if not order
+    idInToken = Utils.idFromToken(req.headers['x-token'])
+    if idInToken is order.windowerId || idInToken is order.customerId
+      delete order.is_delete
+      return res.json(order)
+    else
+      return next(commonBiz.customError(401,'您没有权利这么做'))
+  )
 
-  1
 
+updateOrder = (req,res,next) ->
+  id = req.params['id']
+  db.orders.findOne({_id: id,is_delete:false},(err,order) ->
+    return next(err) if err
+    return next(commonBiz.customError(404,'请检查该订单是否存在')) if not order
+    postData = {}
+    idInToken = Utils.idFromToken(req.headers['x-token'])
+    if idInToken is order.windowerId
+      # 窗口所有者 有接单,完成订单,以及评价的操作
+      postData = commonBiz.concatPostData(order,req.body,['has_received','has_done','windower_evaluated'])
+    else if idInToken is order.customerId
+      # 消费者有取消订单,以及评价的操作
+      postData = commonBiz.concatPostData(order,req.body,['is_cancel','customer_evaluated'])
+    else return next(commonBiz.customError(401,'您没有权利这么做'))
+
+    db.orders.update({_id:id,is_delete:false},{$set:postData},(err,numReplaced) ->
+      return next(err) if err
+      return next(commonBiz.customError(400,'更新失败')) if numReplaced is 0
+      return res.json(true)
+    )
+  )
 
 
 
@@ -69,6 +112,7 @@ getOrder = (req,res,next) ->
 module.exports = {
   addOrder: addOrder
   getOrder: getOrder
+  updateOrder: updateOrder
 }
 
 

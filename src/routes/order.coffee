@@ -21,4 +21,12 @@ router.get(
 
 
 
+# 更新一个订单的信息,注意消费者和窗口管理者的相应权限,默认无权的属性提交无效,并且不给出提示
+router.put(
+  '/:id'
+  commonBiz.authAndSetUserInfo
+  orderBiz.updateOrder
+)
+
+
 module.exports = router
