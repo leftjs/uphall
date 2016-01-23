@@ -43,7 +43,8 @@
       token: '',
       expiredTime: Date.now(),
       is_admin: body.is_admin != null ? body.is_admin : body.is_admin = false,
-      is_windower: body.is_windower != null ? body.is_windower : body.is_windower = false
+      is_windower: body.is_windower != null ? body.is_windower : body.is_windower = false,
+      avatar_uri: ''
     };
     return db.users.insert(postData, function(err, user) {
       if (err) {

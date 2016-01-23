@@ -34,6 +34,7 @@ register = (req,res,next) ->
     expiredTime: Date.now()
     is_admin: body.is_admin ?= false
     is_windower: body.is_windower ?= false
+    avatar_uri: ''
   }
 
   db.users.insert(postData,(err,user) ->

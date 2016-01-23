@@ -2,6 +2,7 @@ request = require('supertest')
 #app = require('../src/libs/app') # 代码app
 app = require('../dist/libs/app')
 
+
 # 全局token
 adminId = ''
 adminToken = ''
@@ -658,9 +659,30 @@ describe('测试订单相关',->
     )
     .end(done)
   )
+  it('上传一个头像',(done) ->
+    request(app)
+    .post('/api/upload/avatar')
+    .set('x-token',customerToken)
+    .attach('avatar','/Users/jason/Desktop/dog.jpg','dog.jpg')
+#    .attach('avatar1','/Users/jason/Desktop/google.png','user.png')
+    .expect(200)
+    .expect((res) ->
+      console.log(res.text)
+    )
+    .end(done)
+  )
 
 
 )
+
+
+
+
+
+
+
+
+
 
 
 

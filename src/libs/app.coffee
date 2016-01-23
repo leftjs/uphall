@@ -6,7 +6,7 @@ bodyParser = require('body-parser')
 cors = require('cors')
 
 
-apiRoutes = require('../routes/api')
+uploadRoutes = require('../routes/upload')
 userRoutes = require('../routes/user')
 shopRoutes = require('../routes/window')
 foodRoutes = require('../routes/food')
@@ -21,7 +21,10 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
-#app.use(express.static(path.join(__dirname, 'public')))
+#console.log(path.join(__dirname,'../images'))
+app.use('/api/images',express.static(path.join(__dirname,'../images')))
+
+
 
 
 app.use(cors())
@@ -32,11 +35,13 @@ app.use(cors())
 
 # 验证权限
 #app.use(commonBiz.validateUserInfo)
-app.use('/api', apiRoutes)
+app.use('/api/upload', uploadRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/windows', shopRoutes)
 app.use('/api/foods',foodRoutes)
 app.use('/api/orders',orderRoutes)
+
+
 
 # catch 404 and forward to error handler
 app.use (req, res, next)->

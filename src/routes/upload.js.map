@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "upload.js",
+  "sourceRoot": "",
+  "sources": [
+    "upload.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA;;EAAA,OAAA,GAAU,OAAA,CAAQ,SAAR;;EACV,MAAA,GAAS,OAAO,CAAC,MAAR,CAAA;;EACT,EAAA,GAAK,OAAA,CAAQ,cAAR;;EAEL,SAAA,GAAY,OAAA,CAAQ,mBAAR;;EAEZ,SAAA,GAAY,OAAA,CAAQ,mBAAR;;EAKZ,MAAM,CAAC,IAAP,CACE,SADF,EAEE,SAAS,CAAC,kBAFZ,EAGE,SAAS,CAAC,YAHZ;;EAMA,MAAM,CAAC,OAAP,GAAiB;AAjBjB"
+}
