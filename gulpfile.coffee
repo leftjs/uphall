@@ -6,9 +6,15 @@ notify = require 'gulp-notify'
 mocha = require('gulp-mocha')
 coffee = require('gulp-coffee')
 gutil = require('gulp-util')
+exit = require('gulp-exit')
 
 gulp.task 'default',(callback) ->
   runSequence(['clean'],['coffee'],['copyFiles'],['serve','watch','test'],['mochaSequence'],callback)
+
+
+gulp.task 'build',(callback) ->
+  runSequence(['clean'],['coffee'],['copyFiles'],['serve'],['mochaSequenceWillExit'],callback)
+
 
 
 gulp.task('coffee', ->
@@ -43,10 +49,22 @@ gulp.task 'cleanDb',(callback) ->
 gulp.task('mocha',->
   gulp.src('./dist/test/**/*.js')
   .pipe(mocha())
+
 )
+gulp.task('mochaWillExit',->
+  gulp.src('./dist/test/**/*.js')
+  .pipe(mocha())
+  .pipe(exit())
+
+)
+
 
 gulp.task('mochaSequence',(callback) ->
   runSequence(['cleanDb'],['coffee'],['mocha'],callback)
+)
+
+gulp.task('mochaSequenceWillExit',(callback) ->
+  runSequence(['cleanDb'],['coffee'],['mochaWillExit'],callback)
 )
 
 gulp.task 'reload', (callback) ->
