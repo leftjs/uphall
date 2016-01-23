@@ -663,7 +663,7 @@ describe('测试订单相关',->
     request(app)
     .post('/api/upload/avatar')
     .set('x-token',customerToken)
-    .attach('avatar','/Users/jason/Desktop/dog.jpg','dog.jpg')
+    .attach('avatar','dist/images/avatar/dog.jpg','dog.jpg')
 #    .attach('avatar1','/Users/jason/Desktop/google.png','user.png')
     .expect(200)
     .expect((res) ->
@@ -674,6 +674,7 @@ describe('测试订单相关',->
 
 
 )
+
 
 
 
