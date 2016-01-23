@@ -19,7 +19,7 @@
   gutil = require('gulp-util');
 
   gulp.task('default', function(callback) {
-    return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve', 'watch', 'test'], callback);
+    return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve', 'watch', 'test'], ['mochaSequence'], callback);
   });
 
   gulp.task('coffee', function() {

@@ -8,7 +8,7 @@ coffee = require('gulp-coffee')
 gutil = require('gulp-util')
 
 gulp.task 'default',(callback) ->
-  runSequence(['clean'],['coffee'],['copyFiles'],['serve','watch','test'],callback)
+  runSequence(['clean'],['coffee'],['copyFiles'],['serve','watch','test'],['mochaSequence'],callback)
 
 
 gulp.task('coffee', ->
