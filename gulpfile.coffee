@@ -12,7 +12,7 @@ gulp.task 'default',(callback) ->
 
 
 gulp.task('coffee', ->
-  gulp.src('./src/**/*.coffee')
+  gulp.src(['./src/**/*.coffee','./**/*.coffee'])
   .pipe(coffee({bare: true}).on('error', gutil.log))
   .pipe(gulp.dest('./dist/'))
   )
@@ -41,12 +41,12 @@ gulp.task 'cleanDb',(callback) ->
   del ['./dist/database/'],callback
 
 gulp.task('mocha',->
-  gulp.src('./test/**/*.js')
+  gulp.src('./dist/test/**/*.js')
   .pipe(mocha())
 )
 
 gulp.task('mochaSequence',(callback) ->
-  runSequence(['cleanDb'],['mocha'],callback)
+  runSequence(['cleanDb'],['coffee'],['mocha'],callback)
 )
 
 gulp.task 'reload', (callback) ->

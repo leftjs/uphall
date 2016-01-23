@@ -1,6 +1,6 @@
 request = require('supertest')
 #app = require('../src/libs/app') # 代码app
-app = require('../dist/libs/app')
+app = require('../libs/app')
 
 
 # 全局token
@@ -674,11 +674,6 @@ describe('测试订单相关',->
 
 
 )
-
-
-
-
-
 
 
 

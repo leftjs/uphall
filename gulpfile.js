@@ -23,7 +23,7 @@
   });
 
   gulp.task('coffee', function() {
-    return gulp.src('./src/**/*.coffee').pipe(coffee({
+    return gulp.src(['./src/**/*.coffee', './**/*.coffee']).pipe(coffee({
       bare: true
     }).on('error', gutil.log)).pipe(gulp.dest('./dist/'));
   });
@@ -55,11 +55,11 @@
   });
 
   gulp.task('mocha', function() {
-    return gulp.src('./test/**/*.js').pipe(mocha());
+    return gulp.src('./dist/test/**/*.js').pipe(mocha());
   });
 
   gulp.task('mochaSequence', function(callback) {
-    return runSequence(['cleanDb'], ['mocha'], callback);
+    return runSequence(['cleanDb'], ['coffee'], ['mocha'], callback);
   });
 
   gulp.task('reload', function(callback) {
