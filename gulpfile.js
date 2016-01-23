@@ -18,14 +18,14 @@
 
   gutil = require('gulp-util');
 
+  gulp.task('default', function(callback) {
+    return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve', 'watch', 'test'], callback);
+  });
+
   gulp.task('coffee', function() {
     return gulp.src('./src/**/*.coffee').pipe(coffee({
       bare: true
     }).on('error', gutil.log)).pipe(gulp.dest('./dist/'));
-  });
-
-  gulp.task('default', function(callback) {
-    return runSequence(['clean', 'coffee'], ['copyFiles'], ['serve', 'watch', 'test'], callback);
   });
 
   gulp.task('clean', function(callback) {
@@ -33,7 +33,7 @@
   });
 
   gulp.task('copyFiles', function() {
-    return gulp.src(['./src/**/*.js', './src/*/*.db']).pipe(gulp.dest('./dist/'));
+    return gulp.src(['./src/*/*.db', './src/**/*.jpg']).pipe(gulp.dest('./dist/'));
   });
 
   gulp.task('serve', function() {
@@ -51,7 +51,7 @@
   });
 
   gulp.task('cleanDb', function(callback) {
-    return del(['./dist/database'], callback);
+    return del(['./dist/database/'], callback);
   });
 
   gulp.task('mocha', function() {

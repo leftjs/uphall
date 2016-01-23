@@ -7,21 +7,22 @@ mocha = require('gulp-mocha')
 coffee = require('gulp-coffee')
 gutil = require('gulp-util')
 
+gulp.task 'default',(callback) ->
+  runSequence(['clean'],['coffee'],['copyFiles'],['serve','watch','test'],callback)
+
+
 gulp.task('coffee', ->
   gulp.src('./src/**/*.coffee')
   .pipe(coffee({bare: true}).on('error', gutil.log))
   .pipe(gulp.dest('./dist/'))
   )
 
-gulp.task 'default',(callback) ->
-  runSequence(['clean','coffee'],['copyFiles'],['serve','watch','test'],callback)
-
 gulp.task 'clean',(callback) ->
   del ['./dist/'], callback
 
 
 gulp.task 'copyFiles', ->
-  gulp.src(['./src/**/*.js','./src/*/*.db'])
+  gulp.src(['./src/*/*.db','./src/**/*.jpg'])
   .pipe(gulp.dest('./dist/'))
 
 
@@ -37,7 +38,7 @@ gulp.task 'test', ->
   gulp.watch(['./test/**/*.coffee'],['mochaSequence'])
 
 gulp.task 'cleanDb',(callback) ->
-  del ['./dist/database'],callback
+  del ['./dist/database/'],callback
 
 gulp.task('mocha',->
   gulp.src('./test/**/*.js')
