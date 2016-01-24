@@ -12,7 +12,7 @@ gulp.task 'default',(callback) ->
   runSequence(['clean'],['coffee'],['copyFiles'],['serve','watch','test'],['mochaSequence'],callback)
 
 
-gulp.task 'test',(callback) ->
+gulp.task 'travis',(callback) ->
   runSequence(['clean'],['coffee'],['copyFiles'],['serve'],['mochaSequenceWillExit'],callback)
 
 gulp.task 'build',(callback) ->

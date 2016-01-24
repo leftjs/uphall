@@ -24,7 +24,7 @@
     return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve', 'watch', 'test'], ['mochaSequence'], callback);
   });
 
-  gulp.task('test', function(callback) {
+  gulp.task('travis', function(callback) {
     return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve'], ['mochaSequenceWillExit'], callback);
   });
 
