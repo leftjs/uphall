@@ -9,7 +9,7 @@ module.exports = {
   dbFilePath: path.join(__dirname, './../database/'),
   dbPath: 'mongodb://localhost/myapi',
   secret: 'token secret',
-  tokenExpiredTime: 1000 * 60 * 60 * 24,
+  tokenExpiredTime: 1000 * 60 * 60 * 24 * 7,
   avatar_base: 'http://localhost:' + port + '/api/images/avatar/',
   window_icon_base: 'http://localhost:' + port + '/api/images/window_icon/',
   comment_images_base: 'http://localhost:' + port + '/api/images/comment_images/',
