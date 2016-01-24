@@ -339,7 +339,13 @@ $ gulp (for serve)
    
    params:
    
-   * ​
+   * id:[required,query] 订单id
+   * [{item:foodId1,count:5},{item:foodId2,count:3},…]:[required,array] 传入object数组，其中item的值为食品的id，count为购买的数量
+   
+   return
+   
+   * 404/401/400
+   * 200 {id:订单号}
    
 2. 获取一个订单
    

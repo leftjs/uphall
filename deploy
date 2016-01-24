@@ -3,4 +3,4 @@ git reset --hard
 git pull origin HEAD
 npm install
 pm2 stop uphall -f
-pm2 start index.js -n uphall
+pm2 start ./dist/index.js -n uphall
