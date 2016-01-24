@@ -18,12 +18,13 @@ addWindow = (req,res,next) ->
   postData = {
     windowName: body.windowName ?= '张师傅的窗口' # 窗口名称
     address: body.address ?= '1楼红椅区12号窗'   # 地址
-    type: body.type ?= 0 # 贩卖类型 综合 0 ，点餐 1，快餐 2
+    type: body.type ?= '综合' # 贩卖类型 综合  ，点餐 ，快餐
     shopping_breakfast: body.shopping_breakfast ?= false # 是否卖早餐
     shopping_lunch : body.shopping_lunch ?= false # 是否卖午餐
     shopping_dinner: body.shopping_dinner ?= false # 是否卖晚餐
     description: body.description ?= '一个新兴的势力'  # 窗口描述
     bulletin: body.bulletin ?= '打包免餐盒费,节假日午休' # 窗口公告
+    promotion: body.promotion ?= '买一送一' # 窗口活动
     rate_score: 5.0 # 店铺评分
     sale_a_month: 0 # 月售单数
     sale_a_day: 0 # 日售单数
@@ -63,12 +64,37 @@ getAllWindows = (req,res,next) ->
   )
 
 
+getWindowsByConditions = (req,res,next) ->
+
+#  allowConditions = ['type','shopping_breakfast','shopping_lunch','shopping_dinner']
+  queryParams = {}
+  if req.body.type
+    queryParams.type = req.body.type
+  if req.body.shopping_breakfast
+    queryParams.shopping_breakfast = req.body.shopping_breakfast
+  if req.body.shopping_lunch
+    queryParams.shopping_lunch = req.body.shopping_lunch
+  if req.body.shopping_dinner
+    queryParams.shopping_dinner = req.body.shopping_dinner
+  queryParams.is_delete =false
+
+  console.log(queryParams)
+  db.windows.find(queryParams,(err,array) ->
+    return next(err) if err
+    if array.length is 0
+      return res.json([])
+    return res.json(_.map(array, (doc) ->
+      delete doc.is_delete
+      return doc
+    ))
+  )
+
 # 更新窗口
 updateWindow = (req,res,next) ->
   doing = (req,res,next) ->
     db.windows.findOne({_id:req.params['id']},(err,doc) ->
       # 窗口持有者无法修改
-      postData = commonBiz.concatPostData(doc,req.body,_.without(_.keys(doc),'_id','author','rate_score','sale_a_month'))
+      postData = commonBiz.concatPostData(doc,req.body,_.without(_.keys(doc),'_id','author','rate_score','sale_a_month','sale_a_day'))
       db.windows.update({_id: req.params['id']},{$set:postData},(err,repalcedNum) ->
         return next(err) if err
         return next(commonBiz.customError(400,'更新失败,请重新尝试')) if repalcedNum is 0
@@ -130,4 +156,5 @@ module.exports = {
   updateWindow: updateWindow
   removeWindow: removeWindow
   getAllWindows: getAllWindows
+  getWindowsByConditions: getWindowsByConditions
 }

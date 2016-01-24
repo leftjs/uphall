@@ -722,6 +722,34 @@ describe('评价订单相关测试',->
 
 
 
+describe('用户相关', ->
+  it('获取一个用户的信息',(done) ->
+    request(app)
+    .get('/api/users/' + adminId)
+    .set('x-token',adminToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    )
+    .end(done)
+  )
+)
+
+describe('窗口相关', ->
+  it('根据类型获取窗口信息信息',(done) ->
+    request(app)
+    .post('/api/windows/conditions')
+    .set('x-token',adminToken)
+    .send({
+      shopping_lunch: true
+    })
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    )
+    .end(done)
+  )
+)
 
 
 

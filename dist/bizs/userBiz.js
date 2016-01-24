@@ -1,4 +1,4 @@
-var Utils, autoLogin, commonBiz, config, db, jwt, login, md5Util, register, update, validateUserExist;
+var Utils, _, autoLogin, commonBiz, config, db, getUser, jwt, login, md5Util, register, update, validateUserExist;
 
 jwt = require('jsonwebtoken');
 
@@ -11,6 +11,8 @@ md5Util = require('./../utils/md5Util');
 Utils = require('./../utils/Utils');
 
 commonBiz = require('./commonBiz');
+
+_ = require('underscore');
 
 validateUserExist = function(req, res, next) {
   var body;
@@ -158,10 +160,32 @@ update = function(req, res, next) {
   }
 };
 
+getUser = function(req, res, next) {
+  return db.users.findOne({
+    _id: req.params['id']
+  }, function(err, user) {
+    var allowToShow, field, i, len, ref;
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return next(commonBiz.customError(404, '未找到该用户'));
+    }
+    allowToShow = ['name', 'is_windower', 'avatar_uri', 'score'];
+    ref = _.difference(_.keys(user), allowToShow);
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      delete user[field];
+    }
+    return res.json(user);
+  });
+};
+
 module.exports = {
   validateUserExist: validateUserExist,
   register: register,
   login: login,
   autoLogin: autoLogin,
-  update: update
+  update: update,
+  getUser: getUser
 };

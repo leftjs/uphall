@@ -20,6 +20,8 @@
 
   router.get('/', commonBiz.authAndSetUserInfo, windowBiz.getAllWindows);
 
+  router.post('/conditions', commonBiz.authAndSetUserInfo, windowBiz.getWindowsByConditions);
+
   module.exports = router;
 
 }).call(this);

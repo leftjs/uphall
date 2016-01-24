@@ -42,6 +42,8 @@ router.put(
 # 获取用户信息
 router.get(
   '/:id'
+  commonBiz.authAndSetUserInfo
+  userBiz.getUser
 )
 
 module.exports = router

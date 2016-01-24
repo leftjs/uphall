@@ -39,6 +39,12 @@ router.get(
   windowBiz.getAllWindows
 )
 
+router.post(
+  '/conditions'
+  commonBiz.authAndSetUserInfo
+  windowBiz.getWindowsByConditions
+)
+
 
 
 

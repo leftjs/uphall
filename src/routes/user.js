@@ -20,7 +20,7 @@
 
   router.put('/:id', userBiz.update);
 
-  router.get('/:id');
+  router.get('/:id', commonBiz.authAndSetUserInfo, userBiz.getUser);
 
   module.exports = router;
 

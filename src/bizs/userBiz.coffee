@@ -8,7 +8,7 @@ md5Util = require('./../utils/md5Util')
 Utils = require './../utils/Utils'
 
 commonBiz = require './commonBiz'
-
+_ = require('underscore')
 
 
 # 验证用户是否存在
@@ -36,6 +36,7 @@ register = (req,res,next) ->
     is_windower: body.is_windower ?= false
     avatar_uri: ''
     score: 0   # 积分系统
+
   }
 
   db.users.insert(postData,(err,user) ->
@@ -110,7 +111,15 @@ update = (req,res,next) ->
     doing(req,res,next)
 
 
-
+getUser = (req,res,next) ->
+  db.users.findOne({_id: req.params['id']},(err,user) ->
+    return next(err) if err
+    return next(commonBiz.customError(404,'未找到该用户')) if not user
+    allowToShow = ['name','is_windower','avatar_uri','score']
+    for field in _.difference(_.keys(user),allowToShow)
+      delete  user[field]
+    return res.json(user)
+  )
 
 
 module.exports = {
@@ -119,4 +128,5 @@ module.exports = {
   login: login
   autoLogin: autoLogin
   update: update
+  getUser: getUser
 }
