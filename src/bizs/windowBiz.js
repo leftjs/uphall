@@ -30,6 +30,7 @@
       bulletin: body.bulletin != null ? body.bulletin : body.bulletin = '打包免餐盒费,节假日午休',
       rate_score: 5.0,
       sale_a_month: 0,
+      sale_a_day: 0,
       createDate: Date.now(),
       resting: false,
       is_delete: false,

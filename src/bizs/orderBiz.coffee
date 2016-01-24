@@ -52,7 +52,27 @@ addOrder = (req,res,next) ->
           windowerCommentId: ''
         },(err,result) ->
           return next(err) if err
-          return res.json({id: result._id}) if result
+
+          if result
+            updateSaleCountEp = new eventproxy()
+            updateSaleCountEp.fail((err) ->
+              return next(err) if err
+            )
+            updateSaleCountEp.after('finish',result.items.length,(results) ->
+              db.windows.update({_id: windowId},{$inc:{sale_a_month:1,sale_a_day:1}},(err,numReplaced) ->
+                return next(err) if err
+                return next(commonBiz.customError(400,'更新窗口销售额失败')) if numReplaced is 0
+                return res.json({id: result._id})
+
+              )
+            )
+            result.items.map((item) ->
+              db.foods.update({_id:item.id},{$inc:{sale_a_month:item.count,sale_a_day:item.count}},(err,numReplaced) ->
+                return updateSaleCountEp.emit('error',err) if err
+                return updateSaleCountEp.emit('error',commonBiz.customError(400,'更新食物销售额失败')) if numReplaced is 0
+                return updateSaleCountEp.emit('finish',null)
+              )
+            )
         )
       else
         return next(commonBiz.customError(400,'添加订单失败,请检查您的订单'))

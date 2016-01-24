@@ -30,6 +30,7 @@ addFood = (req,res,next) ->
       window_id: windowId # 所有窗口
       author_id: window.author.id # 所有者
       sale_a_month: 0 # 月售数量
+      sale_a_day: 0 # 日售数量
       is_delete: false # 删除标志位
       rating: 5 # 评分默认为5
     }
