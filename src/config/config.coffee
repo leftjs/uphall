@@ -4,7 +4,7 @@ port = 7410
 host = 'http://localhost:'
 env = process.env.NODE_ENV
 if env is 'production'
-  port = 80
+#  port = 7410
   host = 'http://121.42.182.77:'
 
 module.exports = {
