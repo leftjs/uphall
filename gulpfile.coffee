@@ -12,10 +12,11 @@ gulp.task 'default',(callback) ->
   runSequence(['clean'],['coffee'],['copyFiles'],['serve','watch','test'],['mochaSequence'],callback)
 
 
-gulp.task 'build',(callback) ->
+gulp.task 'test',(callback) ->
   runSequence(['clean'],['coffee'],['copyFiles'],['serve'],['mochaSequenceWillExit'],callback)
 
-
+gulp.task 'build',(callback) ->
+  runSequence(['clean'],['coffee'],['copyFiles'],callback)
 
 gulp.task('coffee', ->
   gulp.src(['./src/**/*.coffee','./**/*.coffee'])
@@ -28,7 +29,7 @@ gulp.task 'clean',(callback) ->
 
 
 gulp.task 'copyFiles', ->
-  gulp.src(['./src/*/*.db','./src/**/*.jpg'])
+  gulp.src(['./src/*/*.db','./src/**/*.jpg','./deploy'])
   .pipe(gulp.dest('./dist/'))
 
 

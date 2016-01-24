@@ -8,6 +8,7 @@ Utils = require './../utils/Utils'
 _ = require 'underscore'
 Q = require 'q'
 eventproxy = require 'eventproxy'
+math = require 'mathjs'
 
 
 
@@ -32,11 +33,11 @@ addOrder = (req,res,next) ->
       if trueDatas.length isnt 0
         total = 0
         for data in trueDatas
-          total += data.price * data.count
+          total += math.round(data.price,2) * data.count
         db.orders.insert({
           items:trueDatas
           count:trueDatas.length
-          total:total
+          total:math.round(total,2)
           createTime: Date.now()
           has_received: false  # 食堂阿姨是否接单
           is_cancel: false # 是否取消
@@ -67,7 +68,7 @@ addOrder = (req,res,next) ->
               )
             )
             result.items.map((item) ->
-              db.foods.update({_id:item.id},{$inc:{sale_a_month:item.count,sale_a_day:item.count}},(err,numReplaced) ->
+              db.foods.update({_id:item.id},{$inc:{sale_a_month:item.count,sale_a_day:item.count,number:(item.count * (-1))}},(err,numReplaced) ->
                 return updateSaleCountEp.emit('error',err) if err
                 return updateSaleCountEp.emit('error',commonBiz.customError(400,'更新食物销售额失败')) if numReplaced is 0
                 return updateSaleCountEp.emit('finish',null)

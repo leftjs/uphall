@@ -100,6 +100,9 @@
     if (req.body.shopping_dinner) {
       queryParams.shopping_dinner = req.body.shopping_dinner;
     }
+    if (req.body.resting) {
+      queryParams.resting = req.body.resting;
+    }
     queryParams.is_delete = false;
     console.log(queryParams);
     return db.windows.find(queryParams, function(err, array) {

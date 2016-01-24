@@ -77,6 +77,8 @@ getWindowsByConditions = (req,res,next) ->
     queryParams.shopping_lunch = req.body.shopping_lunch
   if req.body.shopping_dinner
     queryParams.shopping_dinner = req.body.shopping_dinner
+  if req.body.resting
+    queryParams.resting = req.body.resting
   queryParams.is_delete =false
 
   console.log(queryParams)

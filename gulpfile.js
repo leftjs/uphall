@@ -24,8 +24,12 @@
     return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve', 'watch', 'test'], ['mochaSequence'], callback);
   });
 
-  gulp.task('build', function(callback) {
+  gulp.task('test', function(callback) {
     return runSequence(['clean'], ['coffee'], ['copyFiles'], ['serve'], ['mochaSequenceWillExit'], callback);
+  });
+
+  gulp.task('build', function(callback) {
+    return runSequence(['clean'], ['coffee'], ['copyFiles'], callback);
   });
 
   gulp.task('coffee', function() {
@@ -39,7 +43,7 @@
   });
 
   gulp.task('copyFiles', function() {
-    return gulp.src(['./src/*/*.db', './src/**/*.jpg']).pipe(gulp.dest('./dist/'));
+    return gulp.src(['./src/*/*.db', './src/**/*.jpg', './deploy']).pipe(gulp.dest('./dist/'));
   });
 
   gulp.task('serve', function() {
