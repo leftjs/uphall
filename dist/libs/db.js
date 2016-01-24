@@ -28,4 +28,9 @@ db.orders = new Datastore({
   autoload: true
 });
 
+db.comments = new Datastore({
+  filename: db.path + 'comments.db',
+  autoload: true
+});
+
 module.exports = db;

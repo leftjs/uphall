@@ -4,15 +4,15 @@ db = require './../libs/db'
 
 commonBiz = require '../bizs/commonBiz'
 
-uploadBiz = require '../bizs/uploadBiz'
+commentBiz = require '../bizs/commentBiz'
 
 
 
 # 用户头像上传api
 router.post(
-  '/avatar'
+  '/:id'
   commonBiz.authAndSetUserInfo
-  uploadBiz.uploadAvatar
+  commentBiz.addCommentToOrder
 )
 
 

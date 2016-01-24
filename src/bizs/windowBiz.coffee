@@ -24,8 +24,8 @@ addWindow = (req,res,next) ->
     shopping_dinner: body.shopping_dinner ?= false # 是否卖晚餐
     description: body.description ?= '一个新兴的势力'  # 窗口描述
     bulletin: body.bulletin ?= '打包免餐盒费,节假日午休' # 窗口公告
-    rate_score: body.rate_score ?= 5.0 # 店铺评分
-    sale_a_month: 3000 # 月售单数
+    rate_score: 5.0 # 店铺评分
+    sale_a_month: 0 # 月售单数
     createDate: Date.now() # 创建时间
     resting: false # 休息中
     is_delete: false # 创建时删除状态必须为假

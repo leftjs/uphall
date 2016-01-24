@@ -35,6 +35,7 @@ register = (req,res,next) ->
     is_admin: body.is_admin ?= false
     is_windower: body.is_windower ?= false
     avatar_uri: ''
+    score: 0   # 积分系统
   }
 
   db.users.insert(postData,(err,user) ->

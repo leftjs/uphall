@@ -1,6 +1,7 @@
 request = require('supertest')
 #app = require('../src/libs/app') # 代码app
 app = require('../libs/app')
+math = require 'mathjs'
 
 
 # 全局token
@@ -671,10 +672,53 @@ describe('测试订单相关',->
     )
     .end(done)
   )
-
-
 )
 
+
+describe('评价订单相关测试',->
+  it('订单消费者评价该订单',(done) ->
+    request(app)
+    .post('/api/comments/' + orderId)
+    .set('x-token',customerToken)
+    .send({
+      rating:4.12
+      content:'东西不错'
+      rates:[
+        {
+          food:foodId
+          score:4.2312
+        }
+      ]
+    })
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+    )
+    .end(done)
+  )
+  it('订单商家评价该订单',(done) ->
+    request(app)
+    .post('/api/comments/' + orderId)
+    .set('x-token',windowerToken)
+
+    .send({
+      rating:2
+      content:'习惯好评'
+    })
+    .expect(200)
+    .end(done)
+  )
+  it('不是本单用户评价该订单',(done) ->
+    request(app)
+    .post('/api/comments/' + orderId)
+    .set('x-token',adminToken)
+    .send({
+      rating:2
+    })
+    .expect(401)
+    .end(done)
+  )
+)
 
 
 

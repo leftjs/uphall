@@ -29,8 +29,9 @@ addFood = (req,res,next) ->
       is_dinner: req.body.is_dinner ?= true # 属于属于晚餐
       window_id: windowId # 所有窗口
       author_id: window.author.id # 所有者
-      sale_a_month: 3000 # 月售数量
+      sale_a_month: 0 # 月售数量
       is_delete: false # 删除标志位
+      rating: 5 # 评分默认为5
     }
     db.foods.insert(postData,(err,doc) ->
       return next(err) if err

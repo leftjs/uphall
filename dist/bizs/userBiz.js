@@ -42,7 +42,8 @@ register = function(req, res, next) {
     expiredTime: Date.now(),
     is_admin: body.is_admin != null ? body.is_admin : body.is_admin = false,
     is_windower: body.is_windower != null ? body.is_windower : body.is_windower = false,
-    avatar_uri: ''
+    avatar_uri: '',
+    score: 0
   };
   return db.users.insert(postData, function(err, user) {
     if (err) {

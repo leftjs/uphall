@@ -1,4 +1,4 @@
-var app, bodyParser, cookieParser, cors, express, foodRoutes, logger, orderRoutes, path, shopRoutes, uploadRoutes, userRoutes;
+var app, bodyParser, commentRoutes, cookieParser, cors, express, foodRoutes, logger, orderRoutes, path, shopRoutes, uploadRoutes, userRoutes;
 
 express = require('express');
 
@@ -21,6 +21,8 @@ shopRoutes = require('../routes/window');
 foodRoutes = require('../routes/food');
 
 orderRoutes = require('../routes/order');
+
+commentRoutes = require('../routes/comment');
 
 app = express();
 
@@ -47,6 +49,8 @@ app.use('/api/windows', shopRoutes);
 app.use('/api/foods', foodRoutes);
 
 app.use('/api/orders', orderRoutes);
+
+app.use('/api/comments', commentRoutes);
 
 app.use(function(req, res, next) {
   var err;

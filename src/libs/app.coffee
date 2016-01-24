@@ -11,6 +11,7 @@ userRoutes = require('../routes/user')
 shopRoutes = require('../routes/window')
 foodRoutes = require('../routes/food')
 orderRoutes = require('../routes/order')
+commentRoutes = require '../routes/comment'
 
 app = express()
 
@@ -40,6 +41,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/windows', shopRoutes)
 app.use('/api/foods',foodRoutes)
 app.use('/api/orders',orderRoutes)
+app.use('/api/comments',commentRoutes)
 
 
 

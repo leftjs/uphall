@@ -28,6 +28,7 @@ addOrder = (req,res,next) ->
     ep.after('found',itemsNumber, (datas) ->
 #      console.log(datas)
       trueDatas = _.compact(datas)
+      console.log(trueDatas)
       if trueDatas.length isnt 0
         total = 0
         for data in trueDatas
@@ -40,13 +41,15 @@ addOrder = (req,res,next) ->
           has_received: false  # 食堂阿姨是否接单
           is_cancel: false # 是否取消
           is_delete: false # 是否删除
+          rating: 0 # 评分
           has_done: false # 是否是完成状态
           windower_evaluated: false # 卖家已评
           customer_evaluated: false # 买家已评
           windowId: windowId # 窗口的id
           windowerId: window.author.id # 订单所涉及窗口的所有者的id
           customerId: Utils.idFromToken(req.headers['x-token'])
-
+          customerCommentId: ''
+          windowerCommentId: ''
         },(err,result) ->
           return next(err) if err
           return res.json({id: result._id}) if result
@@ -92,11 +95,11 @@ updateOrder = (req,res,next) ->
     postData = {}
     idInToken = Utils.idFromToken(req.headers['x-token'])
     if idInToken is order.windowerId
-      # 窗口所有者 有接单,完成订单,以及评价的操作
-      postData = commonBiz.concatPostData(order,req.body,['has_received','has_done','windower_evaluated'])
+      # 窗口所有者 有接单,完成订单
+      postData = commonBiz.concatPostData(order,req.body,['has_received','has_done'])
     else if idInToken is order.customerId
-      # 消费者有取消订单,以及评价的操作
-      postData = commonBiz.concatPostData(order,req.body,['is_cancel','customer_evaluated'])
+      # 消费者有取消订单
+      postData = commonBiz.concatPostData(order,req.body,['is_cancel'])
     else return next(commonBiz.customError(401,'您没有权利这么做'))
 
     db.orders.update({_id:id,is_delete:false},{$set:postData},(err,numReplaced) ->
