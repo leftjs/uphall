@@ -339,7 +339,7 @@ $ gulp (for serve)
    
    params:
    
-   * id:[required,query] 订单id
+   * id:[required,query] 窗口id
    * [{item:foodId1,count:5},{item:foodId2,count:3},…]:[required,array] 传入object数组，其中item的值为食品的id，count为购买的数量
    
    return
@@ -349,15 +349,44 @@ $ gulp (for serve)
    
 2. 获取一个订单
    
+   description:通过指定的订单id获取一个订单
+   
    url: /api/orders/:id
    
    method:GET
    
+   params:
+   
+   * id:[required,query] 订单id
+   
+   return 
+   
+   * 404/401
+   * 200 {orderObj}
+   
 3. 更新一个订单
+   
+   description: 通过传入指定参数更新订单信息，用户信息通过**token**认证，窗口服务员可以接单（has_received),完成订单(has_done)，消费者可以取消订单(is_cancel)
    
    url: /api/orders/:id
    
    method:PUT
+   
+   params:
+   
+   * id:[required,query] 订单id
+   * has_received: [optional,boolean] 接单为窗口服务员所拥有权限，其余类型的用户设置均无效，下同
+   * has_done: [optional,boolean] 更新订单状态为完成状态
+   * is_cancel:[optional,boolean] 消费者可以设置取消订单属性
+   
+   return:
+   
+   * 404/401/400
+   * 200 {true}
+
+#### 评价（comment）
+
+1. 发表评价
 
    
 

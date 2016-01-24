@@ -9,7 +9,6 @@ host = 'http://localhost:';
 env = process.env.NODE_ENV;
 
 if (env === 'production') {
-  port = 80;
   host = 'http://121.42.182.77:';
 }
 
