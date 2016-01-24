@@ -21,13 +21,11 @@
   });
 
   onError = function(error) {
-    var bind, ref;
+    var bind;
     if (error.syscall !== 'listen') {
       throw error;
     }
-    bind = (ref = typeof port === 'string') != null ? ref : 'Pipe ' + {
-      port: 'Port ' + port
-    };
+    bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
     switch (error.code) {
       case 'EACCES':
         console.error(bind + ' requires elevated privileges');
@@ -43,11 +41,9 @@
   server.on('error', onError);
 
   onListening = function() {
-    var addr, bind, ref;
+    var addr, bind;
     addr = server.address();
-    bind = (ref = typeof addr === 'string') != null ? ref : 'pipe ' + {
-      addr: 'port ' + addr.port
-    };
+    bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     return debug('Listening on ' + bind);
   };
 

@@ -14,6 +14,7 @@ config = require './config/config'
 
 
 port = config.port
+
 app.set('port', port)
 
 #/**
@@ -34,7 +35,7 @@ onError = (error) ->
   if error.syscall isnt 'listen'
     throw error
 
-  bind = typeof port is 'string' ? 'Pipe ' + port  : 'Port ' + port
+  bind = if (typeof port is 'string') then 'Pipe ' + port else 'Port ' + port
 
   #  handle specific listen errors with friendly messages
   switch error.code
@@ -57,7 +58,7 @@ server.on('error', onError)
 #
 onListening = ->
   addr = server.address()
-  bind = typeof addr is 'string' ? 'pipe ' + addr : 'port ' + addr.port
+  bind = if (typeof addr is 'string') then 'pipe ' + addr else 'port ' + addr.port
   debug('Listening on ' + bind)
 
 server.on('listening', onListening)
