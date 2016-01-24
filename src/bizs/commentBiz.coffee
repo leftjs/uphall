@@ -72,7 +72,11 @@ addCommentToOrder = (req,res,next) ->
                     return next(err)
                   )
                   ep.after('done',rates.length,(datas) ->
-                    return res.json({id:comment._id})
+                    db.users.update({_id:req.userInfo._id},{$inc:{score:doc.total}},(err,numReplaced) ->
+                      return next(err) if err
+                      return next(commonBiz.customError(400,'为用户积分失败,请检查')) if numReplaced is 0
+                      return res.json({id:comment._id})
+                    )
                   )
                   rates.map((pair) ->
                     foodId = pair.food

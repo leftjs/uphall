@@ -8,7 +8,7 @@ commentBiz = require '../bizs/commentBiz'
 
 
 
-# 用户头像上传api
+# 用户上传api
 router.post(
   '/:id'
   commonBiz.authAndSetUserInfo
