@@ -14,6 +14,12 @@
 
   router.post('/avatar', commonBiz.authAndSetUserInfo, uploadBiz.uploadAvatar);
 
+  router.post('/window/:id', commonBiz.authAndSetUserInfo, uploadBiz.uploadWindowIcon);
+
+  router.post('/comment/:id', commonBiz.authAndSetUserInfo, uploadBiz.uploadCommentImages);
+
+  router.post('/food/:id', commonBiz.authAndSetUserInfo, uploadBiz.uploadFoodIcon);
+
   module.exports = router;
 
 }).call(this);

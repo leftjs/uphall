@@ -675,6 +675,8 @@ describe('测试订单相关',->
 )
 
 
+commentId = ''
+
 describe('评价订单相关测试',->
   it('订单消费者评价该订单',(done) ->
     request(app)
@@ -693,6 +695,7 @@ describe('评价订单相关测试',->
     .expect(200)
     .expect((res) ->
       console.log(res.body)
+      commentId = res.body.id
     )
     .end(done)
   )
@@ -751,7 +754,46 @@ describe('窗口相关', ->
   )
 )
 
+describe('上传相关', ->
+  it('上传一张窗口的icon', (done) ->
+    request(app)
+    .post('/api/upload/window/' + windowId)
+    .set('x-token',windowerToken)
+    .attach('icon','dist/images/window_icon/dog.jpg','dog.jpg')
+    .expect(200)
+    .expect((res) ->
+      console.log(res.text)
+    ).end(done)
 
+  )
+  it('上传多张评论的images', (done) ->
+    request(app)
+    .post('/api/upload/comment/' + commentId)
+    .set('x-token',customerToken)
+    .attach('icon1','dist/images/comment_images/dog.jpg','dog.jpg')
+    .attach('icon2','dist/images/comment_images/dog.jpg','dog.jpg')
+    .attach('icon3','dist/images/comment_images/dog.jpg','dog.jpg')
+    .expect(200)
+    .expect((res) ->
+      console.log(res.text)
+    )
+    .end(done)
+
+  )
+  it('上传一张food的icon', (done) ->
+    request(app)
+    .post('/api/upload/food/' + foodId)
+    .set('x-token',windowerToken)
+    .attach('icon','dist/images/food_icon/dog.jpg','dog.jpg')
+    .expect(200)
+    .expect((res) ->
+      console.log(res.text)
+    ).end(done)
+
+  )
+
+
+)
 
 
 

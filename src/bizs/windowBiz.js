@@ -35,6 +35,7 @@
       createDate: Date.now(),
       resting: false,
       is_delete: false,
+      icon: '',
       author: {
         id: userInfo._id,
         name: userInfo.name

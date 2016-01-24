@@ -31,6 +31,7 @@ addWindow = (req,res,next) ->
     createDate: Date.now() # 创建时间
     resting: false # 休息中
     is_delete: false # 创建时删除状态必须为假
+    icon:'' # 窗口图标
     author: {
       id: userInfo._id
       name: userInfo.name

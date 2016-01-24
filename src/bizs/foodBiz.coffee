@@ -33,6 +33,7 @@ addFood = (req,res,next) ->
       sale_a_day: 0 # 日售数量
       is_delete: false # 删除标志位
       rating: 5 # 评分默认为5
+      icon:'' # 食物的icon
     }
     db.foods.insert(postData,(err,doc) ->
       return next(err) if err

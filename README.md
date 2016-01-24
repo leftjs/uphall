@@ -12,9 +12,9 @@
 ``` bash
 $ git clone git@github.com:leftjs/uphall.git
 $ cd uphall/
-$ npm install -g gulp bower
+$ npm install -g gulp
 $ npm install 
-$ bower install 
-$ gulp
+$ gulp build
+$ gulp 
 ```
 

@@ -33,13 +33,14 @@ addCommentToOrder = (req,res,next) ->
         # TODO 卖家评分的使用场景暂定
         db.comments.insert({
           content: content ?= '这家伙很懒,没有写评价'
+          userId: req.userInfo._id
         },(err,comment) ->
           return next(err) if err
           return next(commonBiz.customError(400,'评价失败')) if not comment
           db.orders.update({_id:orderId,is_delete: false},{$set:{windower_evaluated: true,windowerCommentId: comment._id}},(err,numReplaced) ->
             return next(err) if err
             return next(commonBiz.customError(400,'评价失败')) if numReplaced is 0
-            res.json(true)
+            res.json({id:comment._id})
           )
         )
       else
@@ -49,6 +50,7 @@ addCommentToOrder = (req,res,next) ->
       if rating
         db.comments.insert({
           content: content ?= '这家伙很懒,没有写评价'
+          userId: req.userInfo._id
           pics: []
         },(err,comment) ->
           return next(err) if err
@@ -70,7 +72,7 @@ addCommentToOrder = (req,res,next) ->
                     return next(err)
                   )
                   ep.after('done',rates.length,(datas) ->
-                    return res.json(true)
+                    return res.json({id:comment._id})
                   )
                   rates.map((pair) ->
                     foodId = pair.food
