@@ -33,7 +33,10 @@ addCommentToOrder = (req,res,next) ->
         # TODO 卖家评分的使用场景暂定
         db.comments.insert({
           content: content ?= '这家伙很懒,没有写评价'
+          windowId: doc.windowId
+          orderId: orderId
           userId: req.userInfo._id
+          is_windower: true
         },(err,comment) ->
           return next(err) if err
           return next(commonBiz.customError(400,'评价失败')) if not comment
@@ -51,6 +54,9 @@ addCommentToOrder = (req,res,next) ->
         db.comments.insert({
           content: content ?= '这家伙很懒,没有写评价'
           userId: req.userInfo._id
+          windowId: doc.windowId
+          orderId: orderId
+          is_windower: false
           pics: []
         },(err,comment) ->
           return next(err) if err
@@ -107,10 +113,32 @@ addCommentToOrder = (req,res,next) ->
 
 
 
+# 获取窗口所有的评价
+getWindowComments = (req,res,next) ->
+  windowId = req.params['id']
+  db.comments.find({windowId: windowId},(err,doc) ->
+    return next(err) if err
+    return next(commonBiz.customError(404,'找不到该窗口的评价')) if not doc
+    return res.json(doc)
+  )
+
+
+
+# 获取订单的评价
+getOrder = (req,res,next) ->
+#  console.log('asdfasdfs')
+  orderId = req.params['id']
+  db.comments.find({orderId:orderId},(err,doc) ->
+    return next(err) if err
+    return next(commonBiz.customError(404,'找不到该订单的评价')) if not doc
+    return res.json(doc)
+  )
 
 
 module.exports = {
   addCommentToOrder: addCommentToOrder
+  getWindowComments: getWindowComments
+  getOrder:getOrder
 }
 
 

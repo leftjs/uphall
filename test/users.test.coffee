@@ -791,10 +791,32 @@ describe('上传相关', ->
     ).end(done)
 
   )
-
-
 )
 
+
+
+describe('评价相关',->
+  it('获取窗口的所有评价',(done) ->
+    request(app)
+    .get('/api/comments/window/' + windowId )
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+
+    ).end(done)
+  )
+  it('获取该订单的所有评价',(done) ->
+    request(app)
+    .get('/api/comments/order/' + orderId)
+    .set('x-token',windowerToken)
+    .expect(200)
+    .expect((res) ->
+      console.log(res.body)
+
+    ).end(done)
+  )
+)
 
 
 

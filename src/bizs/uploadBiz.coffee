@@ -120,7 +120,7 @@ uploadFoodIcon = (req,res,next) ->
     form.keepExtensions = true
     form.encoding = 'utf-8'
 # 窗口icon的最大尺寸为200k
-    form.maxFieldsSize = 200 * 1024
+    form.maxFieldsSize = 1024 * 1024
 
     form.parse(req,(err,fields,files) ->
       return next(err) if err

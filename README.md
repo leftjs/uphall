@@ -4,7 +4,7 @@
 
 ## The Server for UpHall (尚食堂)
 
-> uphall is a simple app of dinner management ,and this repo is the server of the app, it can make cook(or worker for hall) to publish the infos of  foods ,and people want to have a meal in hall can order the food that she/he want to eat refrain from the long queue. Read the restful api references for more details
+> Uphall is a simple app of dinner management ,and this repo is the server of the app, it can make cook(or worker for hall) to publish the infos of  foods ,and people want to have a meal in hall can order the food that she/he want to eat refrain from the long queue. Read the restful api references for more details
 
 
 
@@ -23,7 +23,7 @@ $ gulp (for serve)
 
 ## RESTful API References (v1)
 
-**访问处login/register两个api外的api均需要在headers中传入'x-token'以判断用户身份，不传一律拒绝操作，返回401
+> 访问除login/register两个api外的api均需要在headers中传入'x-token'以判断用户身份，不传一律拒绝操作，返回401
 
 #### user（用户）
 
@@ -387,8 +387,160 @@ $ gulp (for serve)
 #### 评价（comment）
 
 1. 发表评价
-
    
+   description: 传入订单id 发表相应的评价，消费者评价可以上传图片，窗口管理员评价不需要传入图片，图片上传有两种方式，暂时不支持客户端自行上传到云数据库而只传递url到服务器，目前是调用上传部分的api进行图片上传到本服务器的操作，这点请注意一下
+   
+   url: /api/comments/:id
+   
+   method: POST
+   
+   params: 
+   
+   * id [required,query] 订单id
+   * rating: [required,number(0.0~5.0)] 评分
+   * content: [optional,string] 评价内容，可以不传使用默认评价
+   
+   return: 
+   
+   * 404/400
+   * 200 {id:评价的id}
+   
+2. 获取窗口的评价
+   
+   description: 获取指定窗口的评价，包括消费者和窗口管理员的评价
+   
+   url: /api/comments/window/:id
+   
+   method: GET
+   
+   params:
+   
+   * id: [required,query] 窗口id
+   
+   return:
+   
+   * 404
+   * 200 [{commentObj},{commentObj},...]
+   
+3. 获取单个订单的评价
+   
+   descripiton: 获取单个订单的双方评价
+   
+   url: /api/comments/order/:id
+   
+   method: GET
+   
+   params:
+   
+   * id: [required,query] 订单id
+   
+   return:
+   
+   * 404
+   * 200 [{commentObj},{commentObj},…]
+
+#### 图片上传（upload）
+
+1. 窗口的icon上传
+   
+   description: 窗口的icon的上传，身份认证必须是该窗口的拥有者
+   
+   headers: 
+   
+   * Content-Type: multipart-form-data   除上传api外都默认是application/x-www-form-urlencoded
+   * x-token: 默认必传
+   
+   url: /api/upload/window/:id
+   
+   method: POST
+   
+   params:
+   
+   * id: [required,query] 窗口的id
+   * file: [required,file] 可以传入一张image，大小不超过200K，不限制属性名
+   
+   return: 
+   
+   * 400/401
+   * 200 body.text = 'success'
+   
+2. 评论的图片上传
+   
+   description: 某订单评论的图片上传，必须是该订单的消费者
+   
+   headers: 
+   
+   * Content-Type: multipart-form-data   除上传api外都默认是application/x-www-form-urlencoded
+   * x-token: 默认必传
+   
+   url: /api/upload/comment/:id
+   
+   method: POST
+   
+   params:
+   
+   * id: [required,query] 订单的id
+   * files: [required,file] 可以传入多张图片，注意属性名不能相同，可用file1,file2... 代替，不限制属性名，可自由发挥
+   
+   return 
+   
+   * 400/401
+   * 200 body.text = 'success'
+   
+3. 用户头像上传
+   
+   description: 用户头像的上传
+   
+   headers: 
+   
+   - Content-Type: multipart-form-data   除上传api外都默认是application/x-www-form-urlencoded
+   - x-token: 默认必传
+   
+   url: /api/upload/avatar
+   
+   method: POST
+   
+   params:
+   
+   - file: [required,file] 文件名称无所谓，只需要传递一张图片即可，大小不超过200K
+   
+   return: 
+   
+   - 400
+   - 200 body.text = 'success'
+   
+4. 食物的展示图片上传
+   
+   description: 食物的展示图片的上传，图片最大尺寸为1M，规定自由该食物的拥有者能够上传食物的图片
+   
+   headers: 
+   
+   - Content-Type: multipart-form-data   除上传api外都默认是application/x-www-form-urlencoded
+   - x-token: 默认必传
+   
+   url: /api/upload/food/:id
+   
+   method: POST
+   
+   params:
+   
+   - id: [required,query] 食物的id
+   - file: [required,file] 可以传入一张image，大小不超过200K，不限制属性名
+   
+   return: 
+   
+   - 400/401
+   - 200 body.text = 'success'
+
+
+
+
+
+
+
+### NOTES
+
+ *api(v1)如上，其余功能v2中陆续增加，推送以及IM拟采用[leancloud](https://leancloud.cn/docs/index.html),文档可以提前阅读*
 
 
 
